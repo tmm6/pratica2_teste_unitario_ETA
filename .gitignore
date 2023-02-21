@@ -1,0 +1,10 @@
+# Byte-compiled
+__pycache__/
+
+
+# Unit test / coverage reports
+.pytest_cache/
+.idea
+
+# pyenv
+.python-version
