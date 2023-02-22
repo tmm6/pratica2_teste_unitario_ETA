@@ -227,7 +227,7 @@ class TestPhonebook:
         assert result == msg_absent_contact
 
     # TESTES PARA ORDENAÇÃO DOS NÚMEROS DE TELEFONE
-    def test_phonebook_sorted_crescente(self, name_user, number_user):
+    def test_phonebook_sorted(self, name_user, number_user):
         # Setup
         contact_list = Phonebook()
         contact_list.add(name_user, number_user)
@@ -253,20 +253,27 @@ class TestPhonebook:
         assert len(contact_list.entries) == lenght_contact_list
 
     ###################################
-    def test_sorted_decrescente(self):
+    def test_phonebook_reverse(self, name_user, number_user):
         # Setup
-        nome_valido = 'Homem da meia noite'
-        numero_valido = '389457'
-        nome_valido2 = 'Zomem da meia noite'
-        numero_valido2 = '0'
-        lista_ordenada = ['389457', '190', '0']
-        contatos = Phonebook()
-        contatos.add(nome_valido, numero_valido)
-        contatos.add(nome_valido2, numero_valido2)
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        result_numbers_list_sorted = [number_user, '190']
 
         # Chamada
-        resultado = contatos.get_phonebook_reverse()
+        result = contact_list.get_phonebook_reverse()
 
         #Asserts
-        assert resultado == lista_ordenada
-        # self.assertEqual(resultado, lista_ordenada)
+        assert result == result_numbers_list_sorted
+
+    def test_phonebook_reverse_lista_vazia(self, msg_phonebook_empty):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.clear()
+        lenght_contact_list = 0
+
+        # Chamada
+        result = contact_list.get_phonebook_reverse()
+
+        #Asserts
+        assert result == msg_phonebook_empty
+        assert len(contact_list.entries) == lenght_contact_list

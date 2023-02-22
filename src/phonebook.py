@@ -211,10 +211,13 @@ class Phonebook:
         '''
         Correção: o método foi alterado para retornar todos os números em ordem decrescente.
         '''
-        lista_numeros = self.get_numbers()
+        if len(self.entries) != 0:
+            numbers_list = self.get_numbers()
+            numbers_list.sort(reverse=True)
+            return numbers_list
+        else:
+            return self.msg_phonebook_empty
 
-        lista_numeros.sort(reverse=True)
-        return lista_numeros
 
 
     def delete(self, name):
