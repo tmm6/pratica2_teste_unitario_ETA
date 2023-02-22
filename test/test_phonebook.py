@@ -23,6 +23,10 @@ class TestPhonebook:
         return 'Usuário já existente'
 
     @pytest.fixture
+    def msg_absent_contact(self):
+        return 'Usuário não existe'
+
+    @pytest.fixture
     def name_user(self):
         return 'Violet Evergarden'
 
@@ -33,8 +37,40 @@ class TestPhonebook:
     """
     Testes
     """
+    # TESTES VALIDAÇÃO DOS CAMPOS
+    def test_contato_invalido(self):
+        # Setup
+        invalid_name_list = ['#alf', 'jk@h', 'df!hj', '$kh', '%kdsgh']
+        contact_list = Phonebook()
+        result_list = []
+        msg_list = [True, True, True, True, True]
+
+        # Chamada
+        for invalid_name in invalid_name_list:
+            result = contact_list.validate_name(invalid_name)
+            result_list.append(result)
+
+        # Asserts
+        assert result_list == msg_list
+
+    def test_contato_vazio_none(self):
+        # Setup
+        invalid_name_list = ['', None]
+        contact_list = Phonebook()
+        result_list = []
+        msg_list = [True, True]
+
+        # Chamada
+        for invalid_name in invalid_name_list:
+            result = contact_list.is_none_or_empty(invalid_name)
+            result_list.append(result)
+
+        # Asserts
+        assert result_list == msg_list
+
+
     # TESTES ADIÇÃO CONTATO
-    # Teste para adição deu um contato válido
+    # Teste para adição de um contato válido
     def test_add_contato_valido(self, name_user, number_user, msg_add_name):
         # Setup
         contact_list = Phonebook()
@@ -52,29 +88,12 @@ class TestPhonebook:
         length_contact_list = 2
         contact_list = Phonebook()
         contact_list.add(name_user, number_user)
+
         # Chamada
         result = contact_list.add(name_user, number_user)
 
         # Asserts
         assert result == msg_name_duplicated
-        assert len(contact_list.entries) == length_contact_list
-
-    def test_nome_invalido(self, number_user, msg_invalid_name):
-        # Setup
-        invalid_name_list = ['#alf', 'jk@h', 'df!hj', '$kh', '%kdsgh', '', None]
-        length_contact_list = 1
-        contact_list = Phonebook()
-        result_list = []
-        msg_list = [msg_invalid_name, msg_invalid_name, msg_invalid_name, msg_invalid_name, msg_invalid_name,
-                    msg_invalid_name, msg_invalid_name]
-
-        # Chamada
-        for invalid_name in invalid_name_list:
-            msg_result = contact_list.add(invalid_name, number_user)
-            result_list.append(msg_result)
-
-        # Asserts
-        assert result_list == msg_list
         assert len(contact_list.entries) == length_contact_list
 
     def test_numero_invalido(self, name_user, msg_invalid_number):
@@ -90,45 +109,43 @@ class TestPhonebook:
         assert result == msg_invalid_number
         assert len(contact_list.entries) == length_contact_list
 
-    def test_numero_vazio(self, name_user, msg_invalid_number):
+    # TESTES PARA O MÉTODO LOOKUP
+    def test_lookup_sucesso(self, name_user, number_user):
         # Setup
-        invalid_number = ''
-        length_contact_list = 1
         contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
 
         # Chamada
-        result = contact_list.add(name_user, invalid_number)
+        result = contact_list.lookup(name_user)
 
         # Asserts
-        assert result == msg_invalid_number
-        assert len(contact_list.entries) == length_contact_list
+        assert result == number_user
 
-    def test_numero_none(self, name_user, msg_invalid_number):
+    def test_lookup_contato_inexistente(self, name_user, number_user, msg_absent_contact):
         # Setup
-        invalid_number = None
-        length_contact_list = 1
         contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        absent_name = 'Gilbert'
 
         # Chamada
-        result = contact_list.add(name_user, invalid_number)
+        result = contact_list.lookup(absent_name)
 
         # Asserts
-        assert result == msg_invalid_number
-        assert len(contact_list.entries) == length_contact_list
+        assert result == msg_absent_contact
 
 ###################################
     # Teste para retornar o numero de telefone do usuario.
-    def test_lookup_valido(self, name):
-        # Setup
-        numero_valido = '389457'
-
-        # Chamada
-        contatos = Phonebook()
-        contatos.add(name, numero_valido)
-        resultado = contatos.lookup(name)
-
-        # Asserts
-        assert resultado == numero_valido
+    # def test_lookup_valido(self, name):
+    #     # Setup
+    #     numero_valido = '389457'
+    #
+    #     # Chamada
+    #     contatos = Phonebook()
+    #     contatos.add(name, numero_valido)
+    #     resultado = contatos.lookup(name)
+    #
+    #     # Asserts
+    #     assert resultado == numero_valido
 
     def test_get_names(self, name, number):
         # Setup

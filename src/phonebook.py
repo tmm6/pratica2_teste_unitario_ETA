@@ -4,6 +4,7 @@ class Phonebook:
     msg_invalid_number = 'Número inválido'
     msg_add_name = 'Número adicionado'
     msg_name_duplicated = 'Usuário já existente'
+    msg_absent_contact = 'Usuário não existe'
 
     def __init__(self):
         self.entries = {'POLICIA': '190'}
@@ -22,6 +23,7 @@ class Phonebook:
     """
     Adição de um método para validar o nome.
     """
+    # Verificar se o nome é inválido.
     def validate_name(self, name):
         """
         Modificação da mensagem de retorno de usuário inválido corrigindo erros de ortografia.
@@ -38,8 +40,6 @@ class Phonebook:
             return True
         if '%' in name:
             return True
-        if name == '':
-            return True
 
         return False
 
@@ -48,6 +48,12 @@ class Phonebook:
         :param name: name of person in string
         :param number: number of person in string
         :return: 'Nome invalido' or 'Numero invalido' or 'Numero adicionado'
+        """
+        # Validações
+        """
+        1 - Nome vazio ou None.
+        2 - Nome inválido.
+        3 - Número vazio ou None
         """
         if self.is_none_or_empty(name):
             return self.msg_invalid_name
@@ -61,19 +67,15 @@ class Phonebook:
         """
         Modificação do retorno do usuário corrigindo erros de ortografia.
         Alteração do tamanho do número de telefone para 3 dígitos.
-        Adição da validação do número de telefone == None e o numero de telefone ser vazio.
         """
         if len(number) < 3:
             return self.msg_invalid_number
-        elif number == '':
-            return self.msg_invalid_number
 
-        # Retirar essa condicional para o search fazer sentido de retornar uma lista.
         """
         Modificação do retorno do usuário corrigindo erros de ortografia.
         Adição de um else para caso o usuário já possua seu contato cadastrado na lista.
         """
-        # Valida se o contato já existe na lista.
+        # Valida se o contato (nome+número) já existe na lista.
         if name not in self.entries:
             self.entries[name] = number
         else:
@@ -86,18 +88,28 @@ class Phonebook:
         :param name: name of person in string
         :return: return number of person with name
         """
-        if '#' in name:
-            return 'Nome invaldo'
-        if '@' in name:
-            return 'Nome invalido'
-        if '!' in name:
-            return 'Nme invalido'
-        if '$' in name:
-            return 'Nome invalido'
-        if '%' in name:
-            return 'Nome nvalido'
+        """
+        Remoção da validação do nome de usuário. Esta validação é realizada pelo método validate_name()
+        """
+        # Validações
+        """
+        1 - Nome vazio ou None.
+        2 - Nome inválido.
+        """
+        if self.is_none_or_empty(name):
+            return self.msg_invalid_name
 
-        return self.entries[name]
+        if self.validate_name(name):
+            return self.msg_invalid_name
+
+        """
+        Adição de uma condicional para verificar se o contato existe na lista.
+        """
+        # Verifica se o contato está cadastrado.
+        if name in self.entries:
+            return self.entries[name]
+        else:
+            return self.msg_absent_contact
 
     def get_names(self):
         """
@@ -142,6 +154,8 @@ class Phonebook:
         :param search_name: string with name for search
         :return: return list with results of search
         """
+        # Retirar essa condicional para o search fazer sentido de retornar uma lista.
+        # É necessário alterar o retorno do método para retornar somente um contato
         result = []
         for name, number in self.entries.items():
             if search_name not in name:
