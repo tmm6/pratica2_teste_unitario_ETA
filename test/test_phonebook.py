@@ -161,31 +161,49 @@ class TestPhonebook:
         # Assert
         assert result == msg_phonebook_empty
         assert len(contact_list.entries) == lenght_contact_list
+
+    # TESTES PARA O MÉTODO GET_NUMBERS
+    def test_get_numbers(self, name_user, number_user):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        result_list_number = ['190', number_user]
+
+        # Chamada
+        result = contact_list.get_numbers()
+
+        # Asserts
+        assert result == result_list_number
+
+    def test_get_numbers_lista_vazia(self, name_user, number_user, msg_phonebook_empty):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.clear()
+        lenght_contact_list = 0
+
+        # Chamada
+        result = contact_list.get_numbers()
+
+        # Asserts
+        assert result == msg_phonebook_empty
+        assert len(contact_list.entries) == lenght_contact_list
+
+    # TESTES PARA O MÉTODO CLEAR
+    def test_clear(self, name_user, number_user, msg_phonebook_empty):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        lenght_contact_list = 0
+
+        # Chamada
+        result = contact_list.clear()
+
+        # Asserts
+        assert result == msg_phonebook_empty
+        assert len(contact_list.entries) == lenght_contact_list
+
+
 ###################################
-    def test_get_numbers_correto(self, nome_contato, numero_contato):
-        # Setup
-        contatos = Phonebook()
-        contatos.add(nome_contato, numero_contato)
-        resultado_esperado = ['190', '389457']
-
-        # Chamada
-        resultado = contatos.get_numbers()
-
-        # Asserts
-        assert resultado == resultado_esperado
-
-    def test_clear_correto(self, nome_contato, numero_contato):
-        # Setup
-        mensagem_esperada = 'phonebook limpado'
-        contatos = Phonebook()
-        contatos.add(nome_contato, numero_contato)
-
-        # Chamada
-        resultado = contatos.clear()
-
-        # Asserts
-        assert resultado == mensagem_esperada
-        assert contatos.entries == {}
 
     def test_search_valido(self, nome_contato, numero_contato):
         # Setup

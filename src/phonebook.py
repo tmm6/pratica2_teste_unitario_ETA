@@ -117,7 +117,9 @@ class Phonebook:
         :return: return all names in phonebook
         """
         """
+        Correção: Ajuste do retorno dos nomes de contato.
         Alteração do retorno do método. Neste caso será retornado uma lista contendo os nomes dos contatos.
+        Caso a lista esteja vazia, será retornado para o usuário uma mensagem infoprmativa.
         """
         if len(self.entries) != 0:
             names_list = []
@@ -129,26 +131,31 @@ class Phonebook:
 
     def get_numbers(self):
         """
-
         :return: return all numbers in phonebook
         """
-        '''
-        Correção: Ajuste do retorno dos numeros de telefone
-        '''
-        lista_numeros = []
-        for number in self.entries.values():
-            lista_numeros.append(number)
-        return lista_numeros
+        """
+        Correção: Ajuste do retorno dos numeros de telefone.
+        Neste caso será retornado uma lista contendo os números dos contatos.
+        Caso a lista esteja vazia, será retornado para o usuário uma mensagem infoprmativa.
+        """
+        if len(self.entries) != 0:
+            numbers_list = []
+            for number in self.entries.values():
+                numbers_list.append(number)
+            return numbers_list
+        else:
+            return self.msg_phonebook_empty
 
     def clear(self):
         """
         Clear all phonebook
         :return: return 'phonebook limpado'
         """
-        # Sera que nao teria que criar um outro contato para limpar o dicionario?
-        # Existe algum outro metodo mais correto.
+        """
+        Alteração da mensagem de retorno.
+        """
         self.entries = {}
-        return 'phonebook limpado'
+        return self.msg_phonebook_empty
 
     def search(self, search_name):
         """
