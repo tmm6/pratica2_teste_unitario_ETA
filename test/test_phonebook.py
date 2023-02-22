@@ -27,6 +27,9 @@ class TestPhonebook:
         return 'Usuário não existe'
 
     @pytest.fixture
+    def msg_phonebook_empty(self):
+        return 'Agenda não possui contatos'
+    @pytest.fixture
     def name_user(self):
         return 'Violet Evergarden'
 
@@ -71,7 +74,7 @@ class TestPhonebook:
 
     # TESTES ADIÇÃO CONTATO
     # Teste para adição de um contato válido
-    def test_add_contato_valido(self, name_user, number_user, msg_add_name):
+    def test_add_contato(self, name_user, number_user, msg_add_name):
         # Setup
         contact_list = Phonebook()
         length_contact_list = 2
@@ -110,7 +113,7 @@ class TestPhonebook:
         assert len(contact_list.entries) == length_contact_list
 
     # TESTES PARA O MÉTODO LOOKUP
-    def test_lookup_sucesso(self, name_user, number_user):
+    def test_lookup(self, name_user, number_user):
         # Setup
         contact_list = Phonebook()
         contact_list.add(name_user, number_user)
@@ -133,32 +136,32 @@ class TestPhonebook:
         # Asserts
         assert result == msg_absent_contact
 
-###################################
-    # Teste para retornar o numero de telefone do usuario.
-    # def test_lookup_valido(self, name):
-    #     # Setup
-    #     numero_valido = '389457'
-    #
-    #     # Chamada
-    #     contatos = Phonebook()
-    #     contatos.add(name, numero_valido)
-    #     resultado = contatos.lookup(name)
-    #
-    #     # Asserts
-    #     assert resultado == numero_valido
-
-    def test_get_names(self, name, number):
+    # TESTES PARA O MÉTODO GET_NAMES
+    def test_get_names(self, name_user, number_user):
         # Setup
-        contatos = Phonebook()
-        contatos.add(name, number)
-        resultado_esperado = ['POLICIA', 'Homem da meia noite']
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        result_list_name = ['POLICIA', name_user]
 
         # Chamada
-        resultado = contatos.get_names()
+        result = contact_list.get_names()
 
         # Asserts
-        assert resultado == resultado_esperado
+        assert result == result_list_name
 
+    def test_get_names_lista_vazia(self, msg_phonebook_empty):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.clear()
+        lenght_contact_list = 0
+
+        # Chamada
+        result = contact_list.get_names()
+
+        # Assert
+        assert result == msg_phonebook_empty
+        assert len(contact_list.entries) == lenght_contact_list
+###################################
     def test_get_numbers_correto(self, nome_contato, numero_contato):
         # Setup
         contatos = Phonebook()

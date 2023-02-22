@@ -5,6 +5,7 @@ class Phonebook:
     msg_add_name = 'Número adicionado'
     msg_name_duplicated = 'Usuário já existente'
     msg_absent_contact = 'Usuário não existe'
+    msg_phonebook_empty = 'Agenda não possui contatos'
 
     def __init__(self):
         self.entries = {'POLICIA': '190'}
@@ -113,17 +114,18 @@ class Phonebook:
 
     def get_names(self):
         """
-
         :return: return all names in phonebook
         """
-        return self.entries.keys()
-    '''
-    lista = []
-        for name in self.entries.keys():
-            lista.append(name)
-        return lista
-    '''
-    ''' Fazer tratamento para o retorno dos contatos ser mais amigavel ['POLICIA', 'Homem da meia noite']'''
+        """
+        Alteração do retorno do método. Neste caso será retornado uma lista contendo os nomes dos contatos.
+        """
+        if len(self.entries) != 0:
+            names_list = []
+            for name in self.entries.keys():
+                names_list.append(name)
+            return names_list
+        else:
+            return self.msg_phonebook_empty
 
     def get_numbers(self):
         """
