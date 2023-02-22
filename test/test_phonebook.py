@@ -1,54 +1,139 @@
-from unittest import TestCase
-
 import pytest
 
 from src.phonebook import Phonebook
 
 
-class TestPhonebook(TestCase):
-    # Utilizar o fixture para reaproveitar codigo
+class TestPhonebook:
+    """
+    Utilização do fixture.
+    """
     @pytest.fixture
-    def msg_contato_add(self):
-        return 'Numero adicionado'
+    def msg_add_name(self):
+        return 'Número adicionado'
+    @pytest.fixture
+    def msg_invalid_name(self):
+        return 'Nome inválido'
 
     @pytest.fixture
-    def nome_contato(self):
-        return 'Homem da meia noite'
+    def msg_invalid_number(self):
+        return 'Número inválido'
 
     @pytest.fixture
-    def numero_contato(self):
-        return '389457'
+    def msg_name_duplicated(self):
+        return 'Usuário já existente'
 
-    # Teste para adicao deu um contato valido
-    def test_add_contato_valido(self, nome_contato, msg_contato_add):
+    @pytest.fixture
+    def name_user(self):
+        return 'Violet Evergarden'
+
+    @pytest.fixture
+    def number_user(self):
+        return '54654754'
+
+    """
+    Testes
+    """
+    # TESTES ADIÇÃO CONTATO
+    # Teste para adição deu um contato válido
+    def test_add_contato_valido(self, name_user, number_user, msg_add_name):
         # Setup
-        numero_valido = '389457'
-
+        contact_list = Phonebook()
+        length_contact_list = 2
         # Chamada
-        contatos = Phonebook()
-        resultado = contatos.add(nome_contato, numero_valido)
+        result = contact_list.add(name_user, number_user)
 
         # Asserts
-        assert resultado == msg_contato_add
-        assert contatos.entries[nome_contato] == numero_valido
+        assert result == msg_add_name
+        assert contact_list.entries[name_user] == number_user
+        assert len(contact_list.entries) == length_contact_list
 
+    def test_add_contato_duplicado(self, name_user, number_user, msg_name_duplicated):
+        # Setup
+        length_contact_list = 2
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        # Chamada
+        result = contact_list.add(name_user, number_user)
+
+        # Asserts
+        assert result == msg_name_duplicated
+        assert len(contact_list.entries) == length_contact_list
+
+    def test_nome_invalido(self, number_user, msg_invalid_name):
+        # Setup
+        invalid_name_list = ['#alf', 'jk@h', 'df!hj', '$kh', '%kdsgh', '', None]
+        length_contact_list = 1
+        contact_list = Phonebook()
+        result_list = []
+        msg_list = [msg_invalid_name, msg_invalid_name, msg_invalid_name, msg_invalid_name, msg_invalid_name,
+                    msg_invalid_name, msg_invalid_name]
+
+        # Chamada
+        for invalid_name in invalid_name_list:
+            msg_result = contact_list.add(invalid_name, number_user)
+            result_list.append(msg_result)
+
+        # Asserts
+        assert result_list == msg_list
+        assert len(contact_list.entries) == length_contact_list
+
+    def test_numero_invalido(self, name_user, msg_invalid_number):
+        # Setup
+        invalid_number = '1'
+        length_contact_list = 1
+        contact_list = Phonebook()
+
+        # Chamada
+        result = contact_list.add(name_user, invalid_number)
+
+        # Asserts
+        assert result == msg_invalid_number
+        assert len(contact_list.entries) == length_contact_list
+
+    def test_numero_vazio(self, name_user, msg_invalid_number):
+        # Setup
+        invalid_number = ''
+        length_contact_list = 1
+        contact_list = Phonebook()
+
+        # Chamada
+        result = contact_list.add(name_user, invalid_number)
+
+        # Asserts
+        assert result == msg_invalid_number
+        assert len(contact_list.entries) == length_contact_list
+
+    def test_numero_none(self, name_user, msg_invalid_number):
+        # Setup
+        invalid_number = None
+        length_contact_list = 1
+        contact_list = Phonebook()
+
+        # Chamada
+        result = contact_list.add(name_user, invalid_number)
+
+        # Asserts
+        assert result == msg_invalid_number
+        assert len(contact_list.entries) == length_contact_list
+
+###################################
     # Teste para retornar o numero de telefone do usuario.
-    def test_lookup_valido(self, nome_contato):
+    def test_lookup_valido(self, name):
         # Setup
         numero_valido = '389457'
 
         # Chamada
         contatos = Phonebook()
-        contatos.add(nome_contato, numero_valido)
-        resultado = contatos.lookup(nome_contato)
+        contatos.add(name, numero_valido)
+        resultado = contatos.lookup(name)
 
         # Asserts
         assert resultado == numero_valido
 
-    def test_get_names(self, nome_contato, numero_contato):
+    def test_get_names(self, name, number):
         # Setup
         contatos = Phonebook()
-        contatos.add(nome_contato, numero_contato)
+        contatos.add(name, number)
         resultado_esperado = ['POLICIA', 'Homem da meia noite']
 
         # Chamada
