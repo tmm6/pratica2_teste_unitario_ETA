@@ -141,13 +141,13 @@ class TestPhonebook:
         # Setup
         contact_list = Phonebook()
         contact_list.add(name_user, number_user)
-        result_list_name = ['POLICIA', name_user]
+        result_names_list = ['POLICIA', name_user]
 
         # Chamada
         result = contact_list.get_names()
 
         # Asserts
-        assert result == result_list_name
+        assert result == result_names_list
 
     def test_get_names_lista_vazia(self, msg_phonebook_empty):
         # Setup
@@ -167,13 +167,13 @@ class TestPhonebook:
         # Setup
         contact_list = Phonebook()
         contact_list.add(name_user, number_user)
-        result_list_number = ['190', number_user]
+        result_numbers_list = ['190', number_user]
 
         # Chamada
         result = contact_list.get_numbers()
 
         # Asserts
-        assert result == result_list_number
+        assert result == result_numbers_list
 
     def test_get_numbers_lista_vazia(self, name_user, number_user, msg_phonebook_empty):
         # Setup
@@ -226,26 +226,33 @@ class TestPhonebook:
         #Asserts
         assert result == msg_absent_contact
 
-###################################
-
-    def test_sorted_crescente(self):
+    # TESTES PARA ORDENAÇÃO DOS NÚMEROS DE TELEFONE
+    def test_phonebook_sorted_crescente(self, name_user, number_user):
         # Setup
-        nome_valido = 'Homem da meia noite'
-        numero_valido = '389457'
-        nome_valido2 = 'Zomem da meia noite'
-        numero_valido2 = '0'
-        lista_ordenada = ['0', '190', '389457']
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        result_numbers_list_sorted = ['190', number_user]
 
         # Chamada
-        contatos = Phonebook()
-        contatos.add(nome_valido, numero_valido)
-        contatos.add(nome_valido2, numero_valido2)
-
-        resultado = contatos.get_phonebook_sorted()
+        result = contact_list.get_phonebook_sorted()
 
         #Asserts
-        self.assertEqual(resultado, lista_ordenada)
+        assert result == result_numbers_list_sorted
 
+    def test_phonebook_sorted_lista_vazia(self, msg_phonebook_empty):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.clear()
+        lenght_contact_list = 0
+
+        # Chamada
+        result = contact_list.get_phonebook_sorted()
+
+        #Asserts
+        assert result == msg_phonebook_empty
+        assert len(contact_list.entries) == lenght_contact_list
+
+    ###################################
     def test_sorted_decrescente(self):
         # Setup
         nome_valido = 'Homem da meia noite'

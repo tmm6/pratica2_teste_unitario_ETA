@@ -196,10 +196,12 @@ class Phonebook:
         '''
         Correção: o método foi alterado para retornar todos os números em ordem crescente.
         '''
-        lista_numeros = self.get_numbers()
-
-        lista_numeros.sort()
-        return lista_numeros
+        if len(self.entries) != 0:
+            numbers_list = self.get_numbers()
+            numbers_list.sort()
+            return numbers_list
+        else:
+            return self.msg_phonebook_empty
 
     def get_phonebook_reverse(self):
         """
