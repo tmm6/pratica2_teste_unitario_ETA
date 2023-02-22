@@ -29,6 +29,11 @@ class TestPhonebook:
     @pytest.fixture
     def msg_phonebook_empty(self):
         return 'Agenda não possui contatos'
+
+    @pytest.fixture
+    def msg_delete_contact(self):
+        return 'Contato excluído'
+
     @pytest.fixture
     def name_user(self):
         return 'Violet Evergarden'
@@ -153,14 +158,14 @@ class TestPhonebook:
         # Setup
         contact_list = Phonebook()
         contact_list.clear()
-        lenght_contact_list = 0
+        length_contact_list = 0
 
         # Chamada
         result = contact_list.get_names()
 
         # Assert
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == lenght_contact_list
+        assert len(contact_list.entries) == length_contact_list
 
     # TESTES PARA O MÉTODO GET_NUMBERS
     def test_get_numbers(self, name_user, number_user):
@@ -179,28 +184,28 @@ class TestPhonebook:
         # Setup
         contact_list = Phonebook()
         contact_list.clear()
-        lenght_contact_list = 0
+        length_contact_list = 0
 
         # Chamada
         result = contact_list.get_numbers()
 
         # Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == lenght_contact_list
+        assert len(contact_list.entries) == length_contact_list
 
     # TESTES PARA O MÉTODO CLEAR
     def test_clear(self, name_user, number_user, msg_phonebook_empty):
         # Setup
         contact_list = Phonebook()
         contact_list.add(name_user, number_user)
-        lenght_contact_list = 0
+        length_contact_list = 0
 
         # Chamada
         result = contact_list.clear()
 
         # Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == lenght_contact_list
+        assert len(contact_list.entries) == length_contact_list
 
     # TESTES PARA O MÉTODO DE SEARCH
     def test_search_valido(self, name_user, number_user):
@@ -243,16 +248,16 @@ class TestPhonebook:
         # Setup
         contact_list = Phonebook()
         contact_list.clear()
-        lenght_contact_list = 0
+        length_contact_list = 0
 
         # Chamada
         result = contact_list.get_phonebook_sorted()
 
         #Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == lenght_contact_list
+        assert len(contact_list.entries) == length_contact_list
 
-    ###################################
+    # TESTES PARA ORDENAÇÃO DECRESCENTE DOS NÚMEROS DE TELEFONE
     def test_phonebook_reverse(self, name_user, number_user):
         # Setup
         contact_list = Phonebook()
@@ -269,11 +274,50 @@ class TestPhonebook:
         # Setup
         contact_list = Phonebook()
         contact_list.clear()
-        lenght_contact_list = 0
+        length_contact_list = 0
 
         # Chamada
         result = contact_list.get_phonebook_reverse()
 
         #Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == lenght_contact_list
+        assert len(contact_list.entries) == length_contact_list
+
+    # TESTES PARA EXCLUSÃO DE UM CONTATO
+    def test_delete_contact(self, name_user, number_user, msg_delete_contact):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        length_contact_list = 1
+
+        # Chamada
+        result = contact_list.delete(name_user)
+
+        # Asserts
+        assert result == msg_delete_contact
+        assert len(contact_list.entries) == length_contact_list
+
+    def test_delete_contato_inexistente(self, name_user, number_user, msg_absent_contact):
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        length_contact_list = 2
+
+        # Chamada
+        result = contact_list.delete('Nome')
+
+        # Assert
+        assert result == msg_absent_contact
+        assert len(contact_list.entries) == length_contact_list
+
+    def test_delete_contact_lista_vazia(self, name_user, msg_phonebook_empty):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.clear()
+        length_contact_list = 0
+
+        # Chamada
+        result = contact_list.delete(name_user)
+
+        #Asserts
+        assert result == msg_phonebook_empty
+        assert len(contact_list.entries) == length_contact_list

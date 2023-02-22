@@ -6,6 +6,7 @@ class Phonebook:
     msg_name_duplicated = 'Usuário já existente'
     msg_absent_contact = 'Usuário não existe'
     msg_phonebook_empty = 'Agenda não possui contatos'
+    msg_delete_contact = 'Contato excluído'
 
     def __init__(self):
         self.entries = {'POLICIA': '190'}
@@ -218,13 +219,32 @@ class Phonebook:
         else:
             return self.msg_phonebook_empty
 
-
-
     def delete(self, name):
         """
         Delete person with name
         :param name: String with name
         :return: return 'Numero deletado'
         """
-        self.entries.pop(name)
-        return 'Numero deletado'
+        # Validações
+        """
+        1 - Nome vazio ou None.
+        2 - Nome inválido.
+        """
+        if self.is_none_or_empty(name):
+            return self.msg_invalid_name
+
+        if self.validate_name(name):
+            return self.msg_invalid_name
+
+        if len(self.entries) == 0:
+            return self.msg_phonebook_empty
+
+        """
+        Adição de uma condicional para verificar se o contato existe na lista.
+        """
+        # Verifica se o contato está cadastrado.
+        if name in self.entries:
+            self.entries.pop(name)
+            return self.msg_delete_contact
+        else:
+            return self.msg_absent_contact
