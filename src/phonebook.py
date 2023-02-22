@@ -163,12 +163,30 @@ class Phonebook:
         :param search_name: string with name for search
         :return: return list with results of search
         """
-        # Retirar essa condicional para o search fazer sentido de retornar uma lista.
-        # É necessário alterar o retorno do método para retornar somente um contato
-        result = []
-        for name, number in self.entries.items():
-            if search_name not in name:
-                result.append({name, number})
+        """
+        Correção: dicionário em python não aceita chaves duplicadas.
+        Neste caso, será alterado para retornar a listra com o contato pesquisado.
+        """
+        # Validações
+        """
+        1 - Nome vazio ou None.
+        2 - Nome inválido.
+        """
+        if self.is_none_or_empty(search_name):
+            return self.msg_invalid_name
+
+        if self.validate_name(search_name):
+            return self.msg_invalid_name
+
+        """
+        Adição de uma condicional para verificar se o contato existe na lista.
+        """
+        # Verifica se o contato está cadastrado.
+        if search_name in self.entries:
+            result = [search_name, self.entries[search_name]]
+        else:
+            return self.msg_absent_contact
+
         return result
 
     def get_phonebook_sorted(self):

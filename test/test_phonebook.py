@@ -202,19 +202,31 @@ class TestPhonebook:
         assert result == msg_phonebook_empty
         assert len(contact_list.entries) == lenght_contact_list
 
-
-###################################
-
-    def test_search_valido(self, nome_contato, numero_contato):
+    # TESTES PARA O MÉTODO DE SEARCH
+    def test_search_valido(self, name_user, number_user):
         # Setup
-        contatos = Phonebook()
-        contatos.add(nome_contato, nome_contato)
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        result_search = [name_user, number_user]
 
         # Chamada
-        resultado = contatos.search(nome_contato)
+        result = contact_list.search(name_user)
 
         #Asserts
-        assert resultado == [{nome_contato, numero_contato}]
+        assert result == result_search
+
+    def test_search_contato_inexistente(self, name_user, number_user, msg_absent_contact):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+
+        # Chamada
+        result = contact_list.search('Nome')
+
+        #Asserts
+        assert result == msg_absent_contact
+
+###################################
 
     def test_sorted_crescente(self):
         # Setup
