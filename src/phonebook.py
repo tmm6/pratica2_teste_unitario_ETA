@@ -17,10 +17,7 @@ class Phonebook:
     """
     # Verifica se o nome ou número é None ou vazio.
     def is_none_or_empty(self, contact):
-        if contact is None or contact == '':
-            return True
-        else:
-            return False
+        return contact is None or contact == ''
 
     """
     Adição de um método para validar o nome.
@@ -78,10 +75,10 @@ class Phonebook:
         Adição de um else para caso o usuário já possua seu contato cadastrado na lista.
         """
         # Valida se o contato (nome+número) já existe na lista.
-        if name not in self.entries:
-            self.entries[name] = number
-        else:
+        if name in self.entries:
             return self.msg_name_duplicated
+        else:
+            self.entries[name] = number
 
         return self.msg_add_name
 
@@ -248,3 +245,4 @@ class Phonebook:
             return self.msg_delete_contact
         else:
             return self.msg_absent_contact
+
