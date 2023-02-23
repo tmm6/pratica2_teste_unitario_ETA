@@ -35,6 +35,9 @@ class TestPhonebook:
         return 'Contato excluído'
 
     @pytest.fixture
+    def msg_change_number(self):
+        return 'Número modificado'
+    @pytest.fixture
     def name_user(self):
         return 'Violet Evergarden'
 
@@ -321,3 +324,30 @@ class TestPhonebook:
         #Asserts
         assert result == msg_phonebook_empty
         assert len(contact_list.entries) == length_contact_list
+
+    # TESTES PARA MUDAR O NÚMERO DO CONTATO
+    def test_change_number_valido(self, name_user, number_user, msg_change_number):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        new_number = '0987654321'
+
+        # Chamada
+        result = contact_list.change_number(name_user, new_number)
+
+        # Assert
+        assert result == msg_change_number
+        assert contact_list.entries[name_user] == new_number
+
+    def test_change_number_contato_inexistente(self, name_user, number_user, msg_absent_contact):
+        # Setup
+        contact_list = Phonebook()
+        contact_list.add(name_user, number_user)
+        new_number = '0987654321'
+
+        # Chamada
+        result = contact_list.change_number('Nome', new_number)
+
+        # Assert
+        assert result == msg_absent_contact
+        assert contact_list.entries[name_user] == number_user
