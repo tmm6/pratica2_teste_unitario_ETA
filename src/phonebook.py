@@ -7,6 +7,7 @@ class Phonebook:
     msg_absent_contact = 'Usuário não existe'
     msg_phonebook_empty = 'Agenda não possui contatos'
     msg_delete_contact = 'Contato excluído'
+    msg_edit_contact = 'Contato atualizado'
 
     def __init__(self):
         self.entries = {'POLICIA': '190'}
@@ -245,4 +246,45 @@ class Phonebook:
             return self.msg_delete_contact
         else:
             return self.msg_absent_contact
+
+
+    """
+    Método novo.
+    """
+    def change_number(self, name, new_number):
+        # Validações
+        """
+        1 - Nome vazio ou None.
+        2 - Nome inválido.
+        3 - Número vazio ou None
+        """
+        if self.is_none_or_empty(name):
+            return self.msg_invalid_name
+
+        if self.validate_name(name):
+            return self.msg_invalid_name
+
+        if self.is_none_or_empty(new_number):
+            return self.msg_invalid_number
+
+        """
+        Verificação se o número é menor que 3 dígitos.
+        """
+        if len(new_number) < 3:
+            return self.msg_invalid_number
+
+        """
+        Modificação do retorno do usuário corrigindo erros de ortografia.
+        Adição de um else para caso o usuário já possua seu contato cadastrado na lista.
+        """
+        # Valida se o contato (nome+número) já existe na lista.
+        if name in self.entries:
+            self.entries[name] = new_number
+            return self.msg_edit_contact
+        else:
+            return self.msg_absent_contact
+
+
+
+
 
