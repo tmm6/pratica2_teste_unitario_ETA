@@ -289,6 +289,16 @@ class Phonebook:
         else:
             return self.msg_absent_contact
 
+    def get_name_by_number(self, number):
+        if self.phonebook_is_empty():
+            return self.msg_phonebook_empty  # Mensagem de retorno informando que não existe contatos na lista.
+
+        for name in self.entries:
+            if self.entries[name] == number:
+                return name
+        return self.msg_absent_contact
+
+
 
 
 
