@@ -407,3 +407,25 @@ class TestPhonebook:
         assert result == msg_absent_contact
         assert contact_obj.entries[name_user] == number_user
 
+    # TESTES PARA PESQUSAR CONTATO PELO NÚMERO
+    def test_get_name_by_number_valido(self, contact_obj, name_user, number_user):
+        # Setup
+        contact_obj.add(name_user, number_user)
+
+        # Chamada
+        result = contact_obj.get_name_by_number(number_user)
+
+        # Assert
+        assert result == name_user
+
+    def test_get_name_by_number_contato_inexistente(self, contact_obj, name_user, number_user, msg_absent_contact):
+        # Setup
+        contact_obj.add(name_user, number_user)
+        absent_numer = '00002'
+
+        # Chamada
+        result = contact_obj.get_name_by_number(absent_numer)
+
+        # Assert
+        assert result == msg_absent_contact
+
