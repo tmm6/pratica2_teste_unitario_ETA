@@ -1,5 +1,17 @@
 # ETA
+Exercício da prática 2 referente à disciplina de Testes unitários, da pós de Testes Ágeis.
 
+## Escopo
+ 1. Escrever testes unitários 
+ 2. Achar bugs 
+ 3. Melhorar código 
+ 4. Corrigir bugs 
+ 5. Usar TDD para adicionar o método:
+    * change_number(self, name, number)
+ 6. Usar TDD para adicionar o método:
+    * get_name_by_number(self, number)
+
+---
 ## Setup
 
 ```bash
