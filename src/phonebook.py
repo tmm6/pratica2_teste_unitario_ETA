@@ -16,13 +16,17 @@ class Phonebook:
     Adição de um método para validar se o contato é None ou vazio.
     Este método pode ser usado tanto para o nome quanto para o telefone.
     """
+
+    # Verifica se o nome ou número é None ou vazio.
     def is_none_or_empty(self, contact):
-        return contact is None or contact == '' # Verifica se o nome ou número é None ou vazio.
+        return contact is None or contact == ''
 
     """
-    Adição de um método para validar o nome.
+    Adição de um método para validar o nome. A verificação foi removida dos métodos que a utilizam.
     """
-    def validate_name(self, name): # Verificar se o nome é inválido.
+
+    # Verificar se o nome é inválido.
+    def validate_name(self, name):
         if '#' in name:
             return True
         if '@' in name:
@@ -40,24 +44,9 @@ class Phonebook:
     Adição de um método para validar o número de telefone.
     Alteração do tamanho do número de telefone para 3 dígitos.
     """
-    def valid_number(self, number): # Verifica se o número de telefone contém mais de 3 dígitos
+    # Verifica se o número de telefone contém mais de 3 dígitos
+    def valid_number(self, number):
         return len(number) < 3
-
-    # """
-    # Adição de um método para validar se a lista telefônica está vazia.
-    # """
-    # def phonebook_is_empty(self):
-    #     return len(self.entries) == 0
-    #
-    # """
-    # Adição de um método para identificar se um nome existe no dicionário.
-    # Adição de um else para caso o usuário já possua seu contato cadastrado na lista.
-    # """
-    # def contact_in_list(self, name): # Verifica se o nome já existe no dicionário.
-    #     if name in self.entries:
-    #         return True
-    #     else:
-    #         return False
 
     def add(self, name, number):
         """
@@ -74,23 +63,28 @@ class Phonebook:
         4 - Número de telefone menor que 3 dígitos.
         """
         if self.is_none_or_empty(name):
-            return self.msg_invalid_name # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_invalid_name
 
         if self.validate_name(name):
-            return self.msg_invalid_name # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_invalid_name
 
         if self.is_none_or_empty(number):
-            return self.msg_invalid_number # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_invalid_number
 
         if self.valid_number(number):
-            return self.msg_invalid_number # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_invalid_number
 
         """
         Verifica se o contato já existe.
         Caso não exista, adiciona o contato no dicionário.
         """
         if name in self.entries:
-            return self.msg_name_duplicated # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_name_duplicated
         else:
             self.entries[name] = number
             return self.msg_add_name
@@ -105,7 +99,6 @@ class Phonebook:
         Remoção da validação do nome de usuário. Esta validação é realizada pelo método validate_name()
         1 - Nome vazio ou None.
         2 - Nome inválido.
-        3 - Verifica se a lista está vazia.
         """
         if self.is_none_or_empty(name):
             return self.msg_invalid_name
@@ -113,14 +106,12 @@ class Phonebook:
         if self.validate_name(name):
             return self.msg_invalid_name
 
-        # if self.entries:
-        #     return self.msg_phonebook_empty  # Mensagem de retorno informando que não existe contatos na lista.
-
         # Verifica se o contato está cadastrado.
         if name in self.entries:
             return self.entries[name]
         else:
-            return self.msg_absent_contact # Mensagem de retorno informando que o contato não existe.
+            # Mensagem de retorno informando que o contato não existe.
+            return self.msg_absent_contact
 
     def get_names(self):
         """
@@ -137,7 +128,8 @@ class Phonebook:
                 names_list.append(name)
             return names_list
         else:
-            return self.msg_phonebook_empty  # Mensagem de retorno informando que não existe contatos na lista.
+            # Mensagem de retorno informando que não existe contatos na lista.
+            return self.msg_phonebook_empty
 
     def get_numbers(self):
         """
@@ -154,18 +146,17 @@ class Phonebook:
                 numbers_list.append(number)
             return numbers_list
         else:
-            return self.msg_phonebook_empty # Mensagem de retorno informando que não existe contatos na lista.
+            # Mensagem de retorno informando que não existe contatos na lista.
+            return self.msg_phonebook_empty
 
     def clear(self):
         """
         Clear all phonebook
         :return: return 'phonebook limpado'
         """
-        """
-        Alteração da mensagem de retorno.
-        """
         self.entries = {}
-        return self.msg_phonebook_empty # Mensagem de retorno informando que a lista está vazia.
+        # Alteração da mensagem de retorno.. Mensagem de retorno informando que a lista está vazia.
+        return self.msg_phonebook_empty
 
     def search(self, search_name):
         """
@@ -181,20 +172,22 @@ class Phonebook:
         """
         1 - Nome vazio ou None.
         2 - Nome inválido.
-        3 - Verifica se a lista está vazia.
         """
         if self.is_none_or_empty(search_name):
-            return self.msg_invalid_name # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_invalid_name
 
         if self.validate_name(search_name):
-            return self.msg_invalid_name # Modificação do retorno do usuário corrigindo erros de ortografia.
+            # Modificação do retorno do usuário corrigindo erros de ortografia.
+            return self.msg_invalid_name
 
-        # Verifica se o contato está cadastrado.
+        # Verifica se o contato está cadastrado e consequentemente se a lista está vazia..
         if search_name in self.entries:
             result = [search_name, self.entries[search_name]]
             return result
         else:
-            return self.msg_absent_contact # Mensagem de retorno informando que o contato não existe na lista.
+            # Mensagem de retorno informando que o contato não existe na lista.
+            return self.msg_absent_contact
 
     def get_phonebook_sorted(self):
         """
@@ -208,7 +201,8 @@ class Phonebook:
             numbers_list.sort()
             return numbers_list
         else:
-            return self.msg_phonebook_empty  # Mensagem de retorno informando que não existe contatos na lista.
+            # Mensagem de retorno informando que não existe contatos na lista.
+            return self.msg_phonebook_empty
 
     def get_phonebook_reverse(self):
         """
@@ -222,7 +216,8 @@ class Phonebook:
             numbers_list.sort(reverse=True)
             return numbers_list
         else:
-            return self.msg_phonebook_empty  # Mensagem de retorno informando que não existe contatos na lista.
+            # Mensagem de retorno informando que não existe contatos na lista.
+            return self.msg_phonebook_empty
 
     def delete(self, name):
         """
@@ -234,7 +229,6 @@ class Phonebook:
         """
         1 - Nome vazio ou None.
         2 - Nome inválido.
-        3 - Verifica se a lista está vazia
         """
         if self.is_none_or_empty(name):
             return self.msg_invalid_name
@@ -256,18 +250,24 @@ class Phonebook:
     Método novo.
     """
     def change_number(self, name, new_number):
+        """
+        Edit a user number
+        :param name: name of person in string
+        :param new_number: number of person in string
+        :return: return 'Contato atualizado' or 'Contato inexistente'
+        """
         # Validações
         """
         1 - Número vazio ou None.
         2 - Número de telefone menor que 3 dígitos.
-        3 - Agenda vazia.
         """
-
         if self.is_none_or_empty(new_number):
-            return self.msg_invalid_number # Mensagem de retorno informando que o número é inválido.
+            # Mensagem de retorno informando que o número é inválido.
+            return self.msg_invalid_number
 
         if self.valid_number(new_number):
-            return self.msg_invalid_number # Mensagem de retorno informando que o número é inválido.
+            # Mensagem de retorno informando que o número é inválido.
+            return self.msg_invalid_number
 
         """
         Verifica se o contato já existe.
@@ -279,13 +279,12 @@ class Phonebook:
             return self.msg_absent_contact
 
     def get_name_by_number(self, number):
+        """
+        Search for a user by number
+        :param number: number of person in string
+        :return: return name or 'Contato inexistente'
+        """
         for name in self.entries:
             if self.entries[name] == number:
                 return name
         return self.msg_absent_contact
-
-
-
-
-
-

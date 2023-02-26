@@ -7,8 +7,7 @@ class TestPhonebook:
     """
     Utilização do fixture.
     """
-
-    # Before
+    # Este fixture é utilizado para ser um setup antes de cada teste.
     @pytest.fixture(autouse=True)
     def contact_obj(self):
         return Phonebook()
@@ -33,8 +32,9 @@ class TestPhonebook:
     Testes
     """
     # TESTES VALIDAÇÃO DOS CAMPOS
-    #
-    @pytest.mark.parametrize('chars', ['', None]) # Utilização de parametrização.
+
+    # Utilização de parametrização.
+    @pytest.mark.parametrize('chars', ['', None])
     def test_is_none_or_empty_contato_vazio_none(self, contact_obj, chars):
         # Setup
         result_is_invalid = True
@@ -45,7 +45,8 @@ class TestPhonebook:
         # Asserts
         assert result == result_is_invalid
 
-    @pytest.mark.parametrize('chars', ['#', '@', '!', '$', '%'])# Utilização de parametrização.
+    # Utilização de parametrização.
+    @pytest.mark.parametrize('chars', ['#', '@', '!', '$', '%'])
     def test_validate_name_contato_invalido(self, contact_obj, name_user, chars):
         # Setup
         invalid_name = name_user + chars
@@ -89,7 +90,6 @@ class TestPhonebook:
         # Asserts
         assert result == result_is_invalid
 
-
     # TESTES ADIÇÃO CONTATO
     # Teste para adição de um contato válido
     def test_add_contato(self, contact_obj, name_user, number_user):
@@ -109,14 +109,17 @@ class TestPhonebook:
         # Setup
         length_contact_list = 2
         contact_obj.add(name_user, number_user)
+        contact_list = {'POLICIA': '190', name_user: number_user}
         msg_name_duplicated = 'Usuário já existente'
 
         # Chamada
         result = contact_obj.add(name_user, number_user)
 
         # Asserts
+        assert result == msg_name_duplicated
         assert len(contact_obj.entries) == length_contact_list
         assert contact_obj.entries[name_user] == number_user
+        assert contact_obj. entries == contact_list
 
     # TESTES PARA O MÉTODO LOOKUP
     def test_lookup(self, contact_obj, name_user, number_user):
@@ -152,18 +155,17 @@ class TestPhonebook:
         # Asserts
         assert result == result_names_list
 
-    def test_get_names_lista_vazia(self, msg_phonebook_empty):
+    def test_get_names_lista_vazia(self, contact_obj, msg_phonebook_empty):
         # Setup
-        contact_list = Phonebook()
-        contact_list.clear()
-        length_contact_list = 0
+        contact_obj.clear()
+        contact_list = {}
 
         # Chamada
-        result = contact_list.get_names()
+        result = contact_obj.get_names()
 
         # Assert
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == length_contact_list
+        assert contact_obj.entries == contact_list
 
     # TESTES PARA O MÉTODO GET_NUMBERS
     def test_get_numbers(self, contact_obj, name_user, number_user):
@@ -177,18 +179,17 @@ class TestPhonebook:
         # Asserts
         assert result == result_numbers_list
 
-    def test_get_numbers_lista_vazia(self, name_user, number_user, msg_phonebook_empty):
+    def test_get_numbers_lista_vazia(self, contact_obj, name_user, number_user, msg_phonebook_empty):
         # Setup
-        contact_list = Phonebook()
-        contact_list.clear()
-        length_contact_list = 0
+        contact_obj.clear()
+        contact_list = {}
 
         # Chamada
-        result = contact_list.get_numbers()
+        result = contact_obj.get_numbers()
 
         # Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == length_contact_list
+        assert contact_obj.entries == contact_list
 
     # TESTES PARA O MÉTODO CLEAR
     def test_clear(self, contact_obj, name_user, number_user, msg_phonebook_empty):
@@ -212,7 +213,7 @@ class TestPhonebook:
         # Chamada
         result = contact_obj.search(name_user)
 
-        #Asserts
+        # Asserts
         assert result == result_search
 
     def test_search_contato_inexistente(self, contact_obj, name_user, number_user, msg_absent_contact):
@@ -222,7 +223,7 @@ class TestPhonebook:
         # Chamada
         result = contact_obj.search('Nome')
 
-        #Asserts
+        # Asserts
         assert result == msg_absent_contact
 
     # TESTES PARA ORDENAÇÃO DOS NÚMEROS DE TELEFONE
@@ -234,21 +235,20 @@ class TestPhonebook:
         # Chamada
         result = contact_obj.get_phonebook_sorted()
 
-        #Asserts
+        # Asserts
         assert result == result_numbers_list_sorted
 
-    def test_phonebook_sorted_lista_vazia(self, msg_phonebook_empty):
+    def test_phonebook_sorted_lista_vazia(self, contact_obj, msg_phonebook_empty):
         # Setup
-        contact_list = Phonebook()
-        contact_list.clear()
-        length_contact_list = 0
+        contact_obj.clear()
+        contact_list = {}
 
         # Chamada
-        result = contact_list.get_phonebook_sorted()
+        result = contact_obj.get_phonebook_sorted()
 
-        #Asserts
+        # Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == length_contact_list
+        assert contact_obj.entries == contact_list
 
     # TESTES PARA ORDENAÇÃO DECRESCENTE DOS NÚMEROS DE TELEFONE
     def test_phonebook_reverse(self, contact_obj, name_user, number_user):
@@ -259,21 +259,20 @@ class TestPhonebook:
         # Chamada
         result = contact_obj.get_phonebook_reverse()
 
-        #Asserts
+        # Asserts
         assert result == result_numbers_list_sorted
 
-    def test_phonebook_reverse_lista_vazia(self, msg_phonebook_empty):
+    def test_phonebook_reverse_lista_vazia(self, contact_obj, msg_phonebook_empty):
         # Setup
-        contact_list = Phonebook()
-        contact_list.clear()
-        length_contact_list = 0
+        contact_obj.clear()
+        contact_list = {}
 
         # Chamada
-        result = contact_list.get_phonebook_reverse()
+        result = contact_obj.get_phonebook_reverse()
 
-        #Asserts
+        # Asserts
         assert result == msg_phonebook_empty
-        assert len(contact_list.entries) == length_contact_list
+        assert contact_obj.entries == contact_list
 
     # TESTES PARA EXCLUSÃO DE UM CONTATO
     def test_delete_contact(self, contact_obj, name_user, number_user):
@@ -354,4 +353,3 @@ class TestPhonebook:
 
         # Assert
         assert result == msg_absent_contact
-
